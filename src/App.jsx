@@ -1,11 +1,11 @@
+// SCSS
 import "./App.scss";
 
+// Router
+import Router from "./routes/Router";
+
 function App() {
-    return (
-        <div className="app">
-            <h1>ReactGram</h1>
-        </div>
-    );
+    return <Router />;
 }
 
 export default App;
