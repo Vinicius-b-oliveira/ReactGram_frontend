@@ -2,8 +2,8 @@ import "./Footer.scss";
 
 const Footer = () => {
     return (
-        <footer id="id">
-            <p>ReactGram &copy; 2022</p>
+        <footer className="page_footer">
+            <p>ReactGram &copy; 2025</p>
         </footer>
     );
 };

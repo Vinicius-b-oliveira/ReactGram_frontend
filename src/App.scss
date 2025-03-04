@@ -1,1 +1,5 @@
 @use "./scss/global_variables" as *;
+
+.container {
+    min-height: 70vh;
+}

@@ -13,20 +13,32 @@ import {
 
 const Navbar = () => {
     return (
-        <nav id="id">
-            <Link to="/">ReactGram</Link>
-            <form>
+        <header className="page_header">
+            <Link className="brand" to="/">
+                ReactGram
+            </Link>
+            <form className="search_form">
                 <BsSearch />
-                <input type="text" />
+                <input type="text" placeholder="Pesquisar" />
             </form>
-            <ul id="nav-links">
-                <NavLink to="/">
-                    <BsHouseDoorFill />
-                </NavLink>
-                <NavLink to="/login">Entrar</NavLink>
-                <NavLink to="/register">Cadastrar</NavLink>
-            </ul>
-        </nav>
+            <nav>
+                <ul className="nav_links">
+                    <li>
+                        <NavLink to="/">
+                            <BsHouseDoorFill />
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/login">Entrar</NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/register">Cadastrar</NavLink>
+                    </li>
+                </ul>
+            </nav>
+        </header>
     );
 };
 

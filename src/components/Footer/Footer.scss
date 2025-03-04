@@ -1,0 +1,8 @@
+@use "../../scss/global_variables" as *;
+
+.page_footer {
+    @include flex();
+    background-color: $background-color;
+    height: 200px;
+    border-top: 1px solid $secondary_color;
+}

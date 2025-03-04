@@ -1,0 +1,40 @@
+@use "../../scss/global_variables" as *;
+
+.page_header {
+    @include flex(row, space-between, center);
+    background-color: $surface-color;
+    border-bottom: 1px solid $background-color;
+    padding: 0.1em 1em;
+
+    .search_form {
+        position: relative;
+        width: 20%;
+
+        svg {
+            position: absolute;
+            top: 10px;
+            left: -9px;
+        }
+
+        input {
+            padding-left: 2.5em;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            margin: 0;
+        }
+    }
+
+    .nav_links {
+        @include flex(row, space-between);
+        gap: 1em;
+
+        span {
+            cursor: pointer;
+        }
+
+        svg {
+            font-size: 1.5em;
+        }
+    }
+}
