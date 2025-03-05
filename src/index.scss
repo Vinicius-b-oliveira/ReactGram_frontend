@@ -8,3 +8,84 @@ body {
     background-color: $background-color;
     color: $text-color;
 }
+
+a {
+    color: $text-color;
+    text-decoration: none;
+}
+
+.active {
+    font-weight: bold;
+}
+
+ul {
+    list-style: none;
+}
+
+form {
+    @include flex(column, flex-start, stretch);
+    gap: 0.6em;
+}
+
+label {
+    @include flex(column, flex-start, stretch);
+    text-align: center;
+
+    span {
+        font-weight: bold;
+        margin-bottom: 0.5em;
+        color: $text-secondary-color;
+        font-size: $font-size-small;
+    }
+}
+
+input {
+    background-color: #3b3b3b;
+    color: $text-secondary-color;
+    border: 1px solid #555;
+    border-radius: 2px;
+    padding: 10px 8px;
+    outline: none;
+
+    &::placeholder {
+        color: $text-secondary-color;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        background-color: $surface-color;
+    }
+}
+
+.btn,
+button,
+input[type="submit"] {
+    background-color: $primary-color;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 8px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.8;
+    font-size: $font-size-base;
+}
+
+input[type="submit"] {
+    margin-top: 1em;
+}
+
+button,
+input[type="submit"] {
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.cancel-btn {
+    background-color: $disabled-color;
+}
+
+.hide {
+    display: none;
+}
