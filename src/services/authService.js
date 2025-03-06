@@ -8,9 +8,11 @@ const register = async (data) => {
 
         const json = await res.json();
 
-        if (json) {
+        if (json._id) {
             sessionStorage.setItem("user", JSON.stringify(json));
         }
+
+        return json;
     } catch (error) {
         console.log(error);
     }
