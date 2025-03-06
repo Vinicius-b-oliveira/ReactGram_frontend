@@ -12,6 +12,9 @@ import { useSelector, useDispatch } from "react-redux";
 // Redux
 import { register, reset } from "../../slices/authSlice";
 
+// Validation
+import * as Yup from "yup";
+
 const Register = () => {
     const [formData, setFormData] = useState({
         name: "",
@@ -30,40 +33,22 @@ const Register = () => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const validateForm = () => {
-        let errors = [];
+    const schema = Yup.object().shape({
+        name: Yup.string()
+            .required("Insira um nome")
+            .min(3, "O nome precisa ter no mínimo 3 caracteres"),
+        email: Yup.string()
+            .required("Insira um email")
+            .email("Insira um email válido"),
+        password: Yup.string()
+            .required("Insira uma senha")
+            .min(5, "A senha precisa ter no mínimo 5 caracteres"),
+        confirmPassword: Yup.string()
+            .required("Confirme a sua senha")
+            .oneOf([Yup.ref("password"), null], "As senhas não são iguais"),
+    });
 
-        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        if (!formData.name) {
-            errors.push("Insira um nome");
-        } else if (formData.name.length < 3) {
-            errors.push("O nome precisa ter no mínimo 3 caracteres");
-        }
-
-        if (!formData.email) {
-            errors.push("Insira um email");
-        } else if (!regex.test(formData.email)) {
-            errors.push("Insira um email válido");
-        }
-
-        if (!formData.password) {
-            errors.push("Insira uma senha");
-        } else if (formData.password.length < 5) {
-            errors.push("A senha precisa ter no mínimo 5 caracteres");
-        }
-
-        if (!formData.confirmPassword) {
-            errors.push("Confirme a sua senha");
-        } else if (formData.password !== formData.confirmPassword) {
-            errors.push("As senhas não são iguais");
-        }
-
-        setFormData((prev) => ({ ...prev, errors }));
-        return errors.length === 0;
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setFormData((prev) => ({
@@ -73,13 +58,10 @@ const Register = () => {
 
         dispatch(reset());
 
-        const isFormValid = validateForm();
-
-        if (!isFormValid) {
-            return;
-        }
-
-        if (formData.errors) {
+        try {
+            await schema.validate(formData, { abortEarly: false });
+        } catch (err) {
+            setFormData((prev) => ({ ...prev, errors: err.errors }));
             return;
         }
 
