@@ -19,7 +19,7 @@ const register = async (data) => {
 };
 
 const logout = () => {
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
 };
 
 const authService = {
