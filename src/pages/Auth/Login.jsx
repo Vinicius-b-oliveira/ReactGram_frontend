@@ -79,7 +79,7 @@ const Login = () => {
 
             <form onSubmit={handleSubmit}>
                 <input
-                    type="text"
+                    type="email"
                     placeholder="E-mail"
                     value={formData.email}
                     onChange={(e) =>
