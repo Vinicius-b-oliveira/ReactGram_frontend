@@ -1,26 +1,31 @@
 // SCSS
 import "./App.scss";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+// Router
+import { BrowserRouter } from "react-router-dom";
 
 // Pages
-import PublicRoutes from "./routes/PublicRoutes";
-import ProtectedRoutes from "./routes/ProtectedRoutes";
+import { AppRoutes } from "./routes/AppRoutes";
 
-// Componetes
+// Components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
+// Hooks
+import { useAuth } from "./hooks/useAuth";
+
 const App = () => {
+    const { auth, loading } = useAuth();
+
+    if (loading) {
+        return <p>Carregando...</p>;
+    }
+
     return (
         <BrowserRouter>
             <Navbar />
             <div className="container">
-                <Routes>
-                    <Route path="/*" element={<PublicRoutes />} />
-
-                    <Route path="/*" element={<ProtectedRoutes />} />
-                </Routes>
+                <AppRoutes auth={auth} />
             </div>
             <Footer />
         </BrowserRouter>
