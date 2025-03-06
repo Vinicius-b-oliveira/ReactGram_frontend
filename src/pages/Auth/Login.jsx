@@ -13,27 +13,63 @@ import { useSelector, useDispatch } from "react-redux";
 import { login, reset } from "../../slices/authSlice";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        errors: [],
+    });
 
-    const dispath = useDispatch();
+    const dispatch = useDispatch();
 
     const { loading, error } = useSelector((state) => state.auth);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        setFormData((prev) => ({
+            ...prev,
+            errors: [],
+        }));
+
+        dispatch(reset());
+
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!formData.email) {
+            setFormData((prev) => ({
+                ...prev,
+                errors: [...prev.errors, "Insira um email "],
+            }));
+            return;
+        }
+
+        if (!regex.test(formData.email)) {
+            setFormData((prev) => ({
+                ...prev,
+                errors: [...prev.errors, "Insira um email válido"],
+            }));
+            return;
+        }
+
+        if (!formData.password) {
+            setFormData((prev) => ({
+                ...prev,
+                errors: [...prev.errors, "Insira uma senha "],
+            }));
+            return;
+        }
+
         const user = {
-            email,
-            password,
+            email: formData.email,
+            password: formData.password,
         };
 
-        dispath(login(user));
+        dispatch(login(user));
     };
 
     useEffect(() => {
-        dispath(reset());
-    }, [dispath]);
+        dispatch(reset());
+    }, [dispatch]);
 
     return (
         <div id="login">
@@ -45,19 +81,32 @@ const Login = () => {
                 <input
                     type="text"
                     placeholder="E-mail"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={formData.email}
+                    onChange={(e) =>
+                        setFormData((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                        }))
+                    }
                 />
                 <input
                     type="password"
                     placeholder="Senha"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formData.password}
+                    onChange={(e) =>
+                        setFormData((prev) => ({
+                            ...prev,
+                            password: e.target.value,
+                        }))
+                    }
                 />
 
                 {!loading && <input type="submit" value="Entrar" />}
                 {loading && <input type="submit" value="Aguarde..." disabled />}
                 {error && <Message message={error} type="error" />}
+                {formData.errors.length > 0 && (
+                    <Message message={formData.errors[0]} type="error" />
+                )}
             </form>
             <p>
                 Não tem uma conta? <Link to="/register">Clique aqui</Link>
