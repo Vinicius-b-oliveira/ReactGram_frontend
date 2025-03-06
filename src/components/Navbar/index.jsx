@@ -11,6 +11,9 @@ import {
     BsFillCameraFill,
 } from "react-icons/bs";
 
+// Redux
+import { logout, reset } from "../../slices/authSlice";
+
 // Hooks
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
@@ -20,6 +23,17 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
     const { auth } = useAuth();
     const { user } = useSelector((state) => state.auth);
+
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        dispatch(reset());
+
+        navigate("/login");
+    };
 
     return (
         <header className="page_header">
@@ -53,7 +67,7 @@ const Navbar = () => {
                                 </NavLink>
                             </li>
                             <li>
-                                <span>Sair</span>
+                                <span onClick={handleLogout}>Sair</span>
                             </li>
                         </>
                     ) : (
