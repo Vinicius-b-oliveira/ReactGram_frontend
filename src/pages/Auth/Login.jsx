@@ -12,6 +12,9 @@ import { useSelector, useDispatch } from "react-redux";
 // Redux
 import { login, reset } from "../../slices/authSlice";
 
+// Validation
+import * as Yup from "yup";
+
 const Login = () => {
     const [formData, setFormData] = useState({
         email: "",
@@ -23,7 +26,19 @@ const Login = () => {
 
     const { loading, error } = useSelector((state) => state.auth);
 
-    const handleSubmit = (e) => {
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const schema = Yup.object().shape({
+        email: Yup.string()
+            .required("Insira um email")
+            .email("Insira um email válido"),
+        password: Yup.string().required("Insira uma senha"),
+    });
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setFormData((prev) => ({
@@ -33,29 +48,10 @@ const Login = () => {
 
         dispatch(reset());
 
-        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        if (!formData.email) {
-            setFormData((prev) => ({
-                ...prev,
-                errors: [...prev.errors, "Insira um email "],
-            }));
-            return;
-        }
-
-        if (!regex.test(formData.email)) {
-            setFormData((prev) => ({
-                ...prev,
-                errors: [...prev.errors, "Insira um email válido"],
-            }));
-            return;
-        }
-
-        if (!formData.password) {
-            setFormData((prev) => ({
-                ...prev,
-                errors: [...prev.errors, "Insira uma senha "],
-            }));
+        try {
+            await schema.validate(formData, { abortEarly: false });
+        } catch (err) {
+            setFormData((prev) => ({ ...prev, errors: err.errors }));
             return;
         }
 
@@ -80,25 +76,17 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"
+                    name="email"
                     placeholder="E-mail"
                     value={formData.email}
-                    onChange={(e) =>
-                        setFormData((prev) => ({
-                            ...prev,
-                            email: e.target.value,
-                        }))
-                    }
+                    onChange={handleInputChange}
                 />
                 <input
                     type="password"
+                    name="password"
                     placeholder="Senha"
                     value={formData.password}
-                    onChange={(e) =>
-                        setFormData((prev) => ({
-                            ...prev,
-                            password: e.target.value,
-                        }))
-                    }
+                    onChange={handleInputChange}
                 />
 
                 {!loading && <input type="submit" value="Entrar" />}
