@@ -25,6 +25,44 @@ const Register = () => {
 
     const { loading, error } = useSelector((state) => state.auth);
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const validateForm = () => {
+        let errors = [];
+
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!formData.name) {
+            errors.push("Insira um nome");
+        } else if (formData.name.length < 3) {
+            errors.push("O nome precisa ter no mínimo 3 caracteres");
+        }
+
+        if (!formData.email) {
+            errors.push("Insira um email");
+        } else if (!regex.test(formData.email)) {
+            errors.push("Insira um email válido");
+        }
+
+        if (!formData.password) {
+            errors.push("Insira uma senha");
+        } else if (formData.password.length < 5) {
+            errors.push("A senha precisa ter no mínimo 5 caracteres");
+        }
+
+        if (!formData.confirmPassword) {
+            errors.push("Confirme a sua senha");
+        } else if (formData.password !== formData.confirmPassword) {
+            errors.push("As senhas não são iguais");
+        }
+
+        setFormData((prev) => ({ ...prev, errors }));
+        return errors.length === 0;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -35,75 +73,13 @@ const Register = () => {
 
         dispatch(reset());
 
-        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const isFormValid = validateForm();
 
-        if (!formData.name) {
-            setFormData((prev) => ({
-                ...prev,
-                errors: [...prev.errors, "Insira um nome"],
-            }));
+        if (!isFormValid) {
             return;
         }
 
-        if (formData.name.length < 3) {
-            setFormData((prev) => ({
-                ...prev,
-                errors: [
-                    ...prev.errors,
-                    "O nome precisa ter no minimo 3 caracteres",
-                ],
-            }));
-            return;
-        }
-
-        if (!formData.email) {
-            setFormData((prev) => ({
-                ...prev,
-                errors: [...prev.errors, "Insira um email "],
-            }));
-            return;
-        }
-
-        if (!regex.test(formData.email)) {
-            setFormData((prev) => ({
-                ...prev,
-                errors: [...prev.errors, "Insira um email válido"],
-            }));
-            return;
-        }
-
-        if (!formData.password) {
-            setFormData((prev) => ({
-                ...prev,
-                errors: [...prev.errors, "Insira uma senha "],
-            }));
-            return;
-        }
-
-        if (formData.password.length < 5) {
-            setFormData((prev) => ({
-                ...prev,
-                errors: [
-                    ...prev.errors,
-                    "A senha precisa ter no mínimo 5 caracteres",
-                ],
-            }));
-            return;
-        }
-
-        if (!formData.confirmPassword) {
-            setFormData((prev) => ({
-                ...prev,
-                errors: [...prev.errors, "Confirme a sua senha "],
-            }));
-            return;
-        }
-
-        if (formData.password !== formData.confirmPassword) {
-            setFormData((prev) => ({
-                ...prev,
-                errors: [...prev.errors, "As senhas não são iguais"],
-            }));
+        if (formData.errors) {
             return;
         }
 
@@ -130,47 +106,31 @@ const Register = () => {
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
+                    name="name"
                     placeholder="Nome"
                     value={formData.name}
-                    onChange={(e) =>
-                        setFormData((prev) => ({
-                            ...prev,
-                            name: e.target.value,
-                        }))
-                    }
+                    onChange={handleInputChange}
                 />
                 <input
                     type="email"
+                    name="email"
                     placeholder="Email"
                     value={formData.email}
-                    onChange={(e) =>
-                        setFormData((prev) => ({
-                            ...prev,
-                            email: e.target.value,
-                        }))
-                    }
+                    onChange={handleInputChange}
                 />
                 <input
                     type="password"
+                    name="password"
                     placeholder="Senha"
                     value={formData.password}
-                    onChange={(e) =>
-                        setFormData((prev) => ({
-                            ...prev,
-                            password: e.target.value,
-                        }))
-                    }
+                    onChange={handleInputChange}
                 />
                 <input
                     type="password"
+                    name="confirmPassword"
                     placeholder="Confirme a senha"
                     value={formData.confirmPassword}
-                    onChange={(e) =>
-                        setFormData((prev) => ({
-                            ...prev,
-                            confirmPassword: e.target.value,
-                        }))
-                    }
+                    onChange={handleInputChange}
                 />
 
                 {!loading && <input type="submit" value="Cadastrar" />}
