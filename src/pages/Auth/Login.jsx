@@ -10,14 +10,30 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // Redux
+import { login, reset } from "../../slices/authSlice";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const dispath = useDispatch();
+
+    const { loading, error } = useSelector((state) => state.auth);
+
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const user = {
+            email,
+            password,
+        };
+
+        dispath(login(user));
     };
+
+    useEffect(() => {
+        dispath(reset());
+    }, [dispath]);
 
     return (
         <div id="login">
@@ -38,7 +54,10 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <input type="submit" value="Entrar" />
+
+                {!loading && <input type="submit" value="Entrar" />}
+                {loading && <input type="submit" value="Aguarde..." disabled />}
+                {error && <Message message={error} type="error" />}
             </form>
             <p>
                 Não tem uma conta? <Link to="/register">Clique aqui</Link>
