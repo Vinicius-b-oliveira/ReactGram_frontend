@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // Redux
-import { profile, resetMessage } from "../../slices/userSlice";
+import { profile, resetMessage, updateProfile } from "../../slices/userSlice";
 
 // Components
 import Message from "../../components/Message";
@@ -46,8 +46,36 @@ const EditProfile = () => {
         setProfileImage(image);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const userData = {
+            name,
+        };
+
+        if (profileImage) {
+            userData.profileImage = profileImage;
+        }
+
+        if (bio) {
+            userData.bio = bio;
+        }
+
+        if (password) {
+            userData.password = password;
+        }
+
+        const formData = new FormData();
+
+        Object.keys(userData).forEach((key) =>
+            formData.append(key, userData[key])
+        );
+
+        dispatch(updateProfile(formData));
+
+        setTimeout(() => {
+            dispatch(resetMessage());
+        }, 2000);
     };
 
     return (
@@ -61,7 +89,7 @@ const EditProfile = () => {
                     src={
                         imagePreview
                             ? URL.createObjectURL(imagePreview)
-                            : `${uploads}/user/${user.profileImage}`
+                            : `${uploads}/users/${user.profileImage}`
                     }
                     alt="Profile image"
                 />
@@ -71,14 +99,14 @@ const EditProfile = () => {
                 <input
                     type="text"
                     placeholder="Nome"
-                    value={name}
+                    value={name || ""}
                     onChange={(e) => setName(e.target.value)}
                 />
                 <input
                     type="email"
                     placeholder="E-mail"
                     disabled
-                    value={email}
+                    value={email || ""}
                 />
                 <label>
                     <span>Imagem do perfil: </span>
@@ -98,12 +126,15 @@ const EditProfile = () => {
                     <input
                         type="password"
                         placeholder="Digite sua nova senha"
-                        value={password}
+                        value={password || ""}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </label>
 
-                <input type="submit" value="Atualizar" />
+                {!loading && <input type="submit" value="Atualizar" />}
+                {loading && <input type="submit" value="Aguarde..." disabled />}
+                {error && <Message message={error} type="error" />}
+                {message && <Message message={message} type="success" />}
             </form>
         </div>
     );
