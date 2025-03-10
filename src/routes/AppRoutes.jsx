@@ -10,6 +10,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import EditProfile from "../pages/EditProfile";
+import Profile from "../pages/Profile";
 
 export const AppRoutes = ({ auth }) => (
     <Routes>
@@ -26,6 +27,14 @@ export const AppRoutes = ({ auth }) => (
             element={
                 <ProtectedRoute auth={auth}>
                     <EditProfile />
+                </ProtectedRoute>
+            }
+        />
+        <Route
+            path="/users/:id"
+            element={
+                <ProtectedRoute auth={auth}>
+                    <Profile />
                 </ProtectedRoute>
             }
         />
