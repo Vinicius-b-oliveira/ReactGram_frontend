@@ -1,7 +1,7 @@
 import { api, requestConfig } from "../utils/config";
 
 const publishPhoto = async (data, token) => {
-    const config = requestConfig("POST", data, token);
+    const config = requestConfig("POST", data, token, true);
 
     try {
         const res = await fetch(`${api}/photos`, config);
