@@ -29,7 +29,6 @@ form {
 
 label {
     @include flex(column, flex-start, stretch);
-    text-align: center;
 
     span {
         font-weight: bold;
