@@ -127,13 +127,17 @@ const Profile = () => {
                                     disabled
                                 />
                             )}
+
+                            {errorPhoto && (
+                                <Message message={errorPhoto} type="error" />
+                            )}
+                            {messagePhoto && (
+                                <Message
+                                    message={messagePhoto}
+                                    type="success"
+                                />
+                            )}
                         </form>
-                        {errorPhoto && (
-                            <Message message={errorPhoto} type="error" />
-                        )}
-                        {messagePhoto && (
-                            <Message message={messagePhoto} type="success" />
-                        )}
                     </div>
                 </>
             )}
@@ -150,7 +154,13 @@ const Profile = () => {
                                     />
                                 )}
                                 {id === userAuth._id ? (
-                                    <p>Actions</p>
+                                    <div className="actions">
+                                        <Link to={`/photos/${photo._id}`}>
+                                            <BsFillEyeFill />
+                                        </Link>
+                                        <BsPencilFill />
+                                        <BsXLg />
+                                    </div>
                                 ) : (
                                     <Link
                                         className="btn"
