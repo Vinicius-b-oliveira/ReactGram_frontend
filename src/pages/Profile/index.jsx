@@ -19,6 +19,7 @@ import {
     publishPhoto,
     getUserPhotos,
     resetMessage,
+    deletePhoto,
 } from "../../slices/photoSlice";
 
 const Profile = () => {
@@ -46,6 +47,12 @@ const Profile = () => {
         dispatch(getUserPhotos(id));
     }, [dispatch, id]);
 
+    const resetComponentMessage = () => {
+        setTimeout(() => {
+            dispatch(resetMessage());
+        }, 2000);
+    };
+
     const handleFile = (e) => {
         const image = e.target.files[0];
 
@@ -60,25 +67,21 @@ const Profile = () => {
             image,
         };
 
-        console.log(photoData);
-
         const formData = new FormData();
 
         Object.keys(photoData).forEach((key) =>
             formData.append(key, photoData[key])
         );
 
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
-
         dispatch(publishPhoto(formData));
 
         setTitle("");
+        resetComponentMessage();
+    };
 
-        setTimeout(() => {
-            dispatch(resetMessage());
-        }, 2000);
+    const handleDelete = (id) => {
+        dispatch(deletePhoto(id));
+        resetComponentMessage();
     };
 
     if (loading) {
@@ -159,7 +162,11 @@ const Profile = () => {
                                             <BsFillEyeFill />
                                         </Link>
                                         <BsPencilFill />
-                                        <BsXLg />
+                                        <BsXLg
+                                            onClick={() =>
+                                                handleDelete(photo._id)
+                                            }
+                                        />
                                     </div>
                                 ) : (
                                     <Link
