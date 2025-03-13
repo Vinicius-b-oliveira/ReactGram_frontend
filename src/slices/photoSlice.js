@@ -97,7 +97,7 @@ export const photoSlice = createSlice({
                 state.success = true;
                 state.error = null;
 
-                state.photos = state.filter((photo) => {
+                state.photos = state.photos.filter((photo) => {
                     return photo._id !== action.payload.id;
                 });
 
