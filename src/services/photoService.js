@@ -46,7 +46,7 @@ const updatePhoto = async (data, id, token) => {
     const config = requestConfig("PUT", data, token);
 
     try {
-        const res = await fetch(`${api}/photos/${id}`);
+        const res = await fetch(`${api}/photos/${id}`, config);
 
         const json = await res.json();
 

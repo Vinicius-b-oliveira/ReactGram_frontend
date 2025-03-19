@@ -58,7 +58,7 @@ export const updatePhoto = createAsyncThunk(
 
         const data = await photoService.updatePhoto(
             { title: photoData.title },
-            photoData._id,
+            photoData.id,
             token
         );
 
