@@ -11,6 +11,7 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import EditProfile from "../pages/EditProfile";
 import Profile from "../pages/Profile";
+import Photo from "../pages/Photo";
 
 export const AppRoutes = ({ auth }) => (
     <Routes>
@@ -35,6 +36,14 @@ export const AppRoutes = ({ auth }) => (
             element={
                 <ProtectedRoute auth={auth}>
                     <Profile />
+                </ProtectedRoute>
+            }
+        />
+        <Route
+            path="/photos/:id"
+            element={
+                <ProtectedRoute auth={auth}>
+                    <Photo />
                 </ProtectedRoute>
             }
         />
