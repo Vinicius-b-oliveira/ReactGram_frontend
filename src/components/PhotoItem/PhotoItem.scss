@@ -1,0 +1,19 @@
+@use "../../scss/global_variables" as *;
+
+.photo_item {
+    img {
+        width: 100%;
+    }
+
+    .photo_author {
+        text-align: left;
+
+        a {
+            font-weight: bold;
+        }
+    }
+}
+
+#home .photo_item h2 {
+    margin-bottom: 0.2em;
+}
