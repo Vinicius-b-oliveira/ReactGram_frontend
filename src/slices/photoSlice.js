@@ -70,11 +70,16 @@ export const updatePhoto = createAsyncThunk(
     }
 );
 
-export const getPhoto = createAsyncThunk("photo/getPhoto", async (id) => {
-    const data = await photoService.getPhoto(id);
+export const getPhoto = createAsyncThunk(
+    "photo/getPhoto",
+    async (id, ThunkAPI) => {
+        const token = ThunkAPI.getState().auth.user.token;
 
-    return data;
-});
+        const data = await photoService.getPhoto(id, token);
+
+        return data;
+    }
+);
 
 export const photoSlice = createSlice({
     name: "photo",
