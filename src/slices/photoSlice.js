@@ -81,6 +81,18 @@ export const getPhoto = createAsyncThunk(
     }
 );
 
+export const like = createAsyncThunk("photo/like", async (id, ThunkAPI) => {
+    const token = ThunkAPI.getState().auth.user.token;
+
+    const data = await photoService.like(id, token);
+
+    if (data.errors) {
+        return ThunkAPI.rejectWithValue(data.errors[0]);
+    }
+
+    return data;
+});
+
 export const photoSlice = createSlice({
     name: "photo",
     initialState,
@@ -170,6 +182,48 @@ export const photoSlice = createSlice({
                 state.success = true;
                 state.error = null;
                 state.photo = action.payload;
+            })
+            .addCase(like.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = true;
+                state.error = null;
+
+                const { photoId, userId } = action.payload;
+
+                if (state.photo) {
+                    const userLikeIndex = state.photo.likes.indexOf(userId);
+                    if (userLikeIndex !== -1) {
+                        state.photo.likes.splice(userLikeIndex, 1);
+                    } else {
+                        state.photo.likes.push(userId);
+                    }
+                }
+
+                state.photos = state.photos.map((photo) => {
+                    if (photo._id === photoId) {
+                        const userLikeIndex = photo.likes.indexOf(userId);
+                        if (userLikeIndex !== -1) {
+                            return {
+                                ...photo,
+                                likes: photo.likes.filter(
+                                    (id) => id !== userId
+                                ),
+                            };
+                        } else {
+                            return {
+                                ...photo,
+                                likes: [...photo.likes, userId],
+                            };
+                        }
+                    }
+                    return photo;
+                });
+
+                state.message = action.payload.message;
+            })
+            .addCase(like.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     },
 });
