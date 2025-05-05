@@ -120,7 +120,9 @@ const Profile = () => {
 
         dispatch(updatePhoto(photoData));
 
-        resetComponentMessage();
+        hideOrShowForms();
+
+        resetMessage();
     };
 
     if (loading) {
