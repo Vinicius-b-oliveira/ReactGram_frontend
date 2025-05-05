@@ -19,7 +19,6 @@ import { getUserDetails } from "../../slices/userSlice";
 import {
     publishPhoto,
     getUserPhotos,
-    resetMessage,
     deletePhoto,
     updatePhoto,
 } from "../../slices/photoSlice";
