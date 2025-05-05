@@ -95,12 +95,12 @@ export const like = createAsyncThunk("photo/like", async (id, ThunkAPI) => {
 
 export const comment = createAsyncThunk(
     "photo/comment",
-    async (photoData, ThunkAPI) => {
+    async (commentData, ThunkAPI) => {
         const token = ThunkAPI.getState().auth.user.token;
 
         const data = await photoService.comment(
-            { comment: photoData.comment },
-            photoData.id,
+            { comment: commentData.comment },
+            commentData.id,
             token
         );
 
