@@ -112,11 +112,16 @@ export const comment = createAsyncThunk(
     }
 );
 
-export const getPhotos = createAsyncThunk("photo/getAll", async () => {
-    const data = await photoService.getPhotos();
+export const getPhotos = createAsyncThunk(
+    "photo/getAll",
+    async (_, ThunkAPI) => {
+        const token = ThunkAPI.getState().auth.user.token;
 
-    return data;
-});
+        const data = await photoService.getPhotos(token);
+
+        return data;
+    }
+);
 
 export const photoSlice = createSlice({
     name: "photo",
@@ -215,31 +220,28 @@ export const photoSlice = createSlice({
 
                 const { photoId, userId } = action.payload;
 
-                if (state.photo) {
-                    const userLikeIndex = state.photo.likes.indexOf(userId);
-                    if (userLikeIndex !== -1) {
-                        state.photo.likes.splice(userLikeIndex, 1);
-                    } else {
-                        state.photo.likes.push(userId);
-                    }
+                if (state.photo && state.photo._id === photoId) {
+                    const likes = state.photo.likes || [];
+                    const userLikeIndex = likes.indexOf(userId);
+
+                    state.photo.likes =
+                        userLikeIndex !== -1
+                            ? likes.filter((id) => id !== userId)
+                            : [...likes, userId];
                 }
 
                 state.photos = state.photos.map((photo) => {
                     if (photo._id === photoId) {
-                        const userLikeIndex = photo.likes.indexOf(userId);
-                        if (userLikeIndex !== -1) {
-                            return {
-                                ...photo,
-                                likes: photo.likes.filter(
-                                    (id) => id !== userId
-                                ),
-                            };
-                        } else {
-                            return {
-                                ...photo,
-                                likes: [...photo.likes, userId],
-                            };
-                        }
+                        const likes = photo.likes || [];
+                        const userLikeIndex = likes.indexOf(userId);
+
+                        return {
+                            ...photo,
+                            likes:
+                                userLikeIndex !== -1
+                                    ? likes.filter((id) => id !== userId)
+                                    : [...likes, userId],
+                        };
                     }
                     return photo;
                 });
