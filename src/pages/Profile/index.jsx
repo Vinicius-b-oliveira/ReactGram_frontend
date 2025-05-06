@@ -1,8 +1,6 @@
 // SCSS
 import "./Profile.scss";
 
-import { uploads } from "../../utils/config";
-
 // Components
 import Message from "../../components/Message";
 import { Link } from "react-router-dom";
@@ -133,10 +131,7 @@ const Profile = () => {
         <div id="profile">
             <div className="profile_header">
                 {user.profileImage && (
-                    <img
-                        src={`${uploads}/users/${user.profileImage}`}
-                        alt="Imagem de perfil"
-                    />
+                    <img src={user.profileImage} alt="Imagem de perfil" />
                 )}
                 <div className="profile_description">
                     <h2>{user.name}</h2>
@@ -175,12 +170,7 @@ const Profile = () => {
                     </div>
                     <div className="edit_photo hide" ref={editPhotoForm}>
                         <p>Editanto:</p>
-                        {editImage && (
-                            <img
-                                src={`${uploads}/photos/${editImage}`}
-                                alt={editTitle}
-                            />
-                        )}
+                        {editImage && <img src={editImage} alt={editTitle} />}
                         <form onSubmit={handleUpdate}>
                             <input
                                 type="text"
@@ -213,10 +203,7 @@ const Profile = () => {
                         photos.map((photo) => (
                             <div className="photo" key={photo._id}>
                                 {photo.image && (
-                                    <img
-                                        src={`${uploads}/photos/${photo.image}`}
-                                        alt={photo.title}
-                                    />
+                                    <img src={photo.image} alt={photo.title} />
                                 )}
                                 {id === userAuth._id ? (
                                     <div className="actions">

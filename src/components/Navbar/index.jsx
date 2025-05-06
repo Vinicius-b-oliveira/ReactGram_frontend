@@ -42,7 +42,9 @@ const Navbar = () => {
         e.preventDefault();
 
         if (query) {
-            return navigate(`/search?q=${query}`);
+            navigate(`/search?q=${query}`);
+            setQuery("");
+            return;
         }
     };
 

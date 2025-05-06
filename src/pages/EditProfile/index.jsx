@@ -1,8 +1,6 @@
 // SCSS
 import "./EditProfile.scss";
 
-import { uploads } from "../../utils/config";
-
 // Hooks
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -17,7 +15,7 @@ import Message from "../../components/Message";
 const EditProfile = () => {
     const dispatch = useDispatch();
 
-    const resetMessage = useResetComponentMessage(dispatch, "user");
+    const resetMessage = useResetComponentMessage(dispatch, "both");
 
     const { user, message, error, loading } = useSelector(
         (state) => state.user
@@ -91,7 +89,7 @@ const EditProfile = () => {
                     src={
                         imagePreview
                             ? URL.createObjectURL(imagePreview)
-                            : `${uploads}/users/${user.profileImage}`
+                            : user.profileImage
                     }
                     alt="Profile image"
                 />
