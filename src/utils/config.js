@@ -1,35 +1,25 @@
 export const api = "https://reactgram-api-tvsx.onrender.com/api";
 
 export const requestConfig = (method, data, token = null, image = null) => {
-    let config;
-
-    if (image) {
-        config = {
-            method,
-            body: data,
-            headers: {},
-            credentials: "include",
-        };
-    } else if (method === "DELETE" || data === null) {
-        config = {
-            method,
-            headers: {},
-            credentials: "include",
-        };
-    } else {
-        config = {
-            method,
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        };
-    }
+    const config = {
+        method,
+        headers: {
+            "Content-Type": image ? undefined : "application/json",
+        },
+        credentials: "include",
+        body: image ? data : JSON.stringify(data),
+    };
 
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Remove headers undefined (especialmente para FormData)
+    Object.keys(config.headers).forEach((key) => {
+        if (config.headers[key] === undefined) {
+            delete config.headers[key];
+        }
+    });
 
     return config;
 };
