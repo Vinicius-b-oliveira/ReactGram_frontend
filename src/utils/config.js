@@ -8,11 +8,13 @@ export const requestConfig = (method, data, token = null, image = null) => {
             method,
             body: data,
             headers: {},
+            credentials: "include",
         };
     } else if (method === "DELETE" || data === null) {
         config = {
             method,
             headers: {},
+            credentials: "include",
         };
     } else {
         config = {
@@ -21,6 +23,7 @@ export const requestConfig = (method, data, token = null, image = null) => {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         };
     }
 
