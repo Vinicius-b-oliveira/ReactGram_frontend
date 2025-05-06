@@ -13,6 +13,7 @@ import PhotoItem from "../../components/PhotoItem";
 // redux
 import { searchPhotos, like } from "../../slices/photoSlice";
 import { Link } from "react-router-dom";
+import Loading from "../../components/Loading";
 
 const Search = () => {
     const query = useQuery();
@@ -35,7 +36,7 @@ const Search = () => {
     }, [dispatch, search]);
 
     if (loading) {
-        return <p>Carregando...</p>;
+        return <Loading />;
     }
 
     return (

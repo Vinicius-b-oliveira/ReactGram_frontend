@@ -13,12 +13,13 @@ import Footer from "./components/Footer";
 
 // Hooks
 import { useAuth } from "./hooks/useAuth";
+import Loading from "./components/Loading";
 
 const App = () => {
     const { auth, loading } = useAuth();
 
     if (loading) {
-        return <p>Carregando...</p>;
+        return <Loading />;
     }
 
     return (

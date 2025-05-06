@@ -22,6 +22,7 @@ import {
     deletePhoto,
     updatePhoto,
 } from "../../slices/photoSlice";
+import Loading from "../../components/Loading";
 
 const Profile = () => {
     const { id } = useParams();
@@ -125,7 +126,7 @@ const Profile = () => {
     };
 
     if (loading) {
-        return <p>Carregando...</p>;
+        return <Loading />;
     }
 
     return (

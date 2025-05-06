@@ -12,6 +12,7 @@ import { useResetComponentMessage } from "../../hooks/useResetComponentMessage";
 
 // Redux
 import { getPhotos, like } from "../../slices/photoSlice";
+import Loading from "../../components/Loading";
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const Home = () => {
     };
 
     if (loading) {
-        return <p>Carregando...</p>;
+        return <Loading />;
     }
 
     return (
