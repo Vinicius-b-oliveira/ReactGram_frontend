@@ -28,7 +28,7 @@ const Profile = () => {
 
     const dispatch = useDispatch();
 
-    const resetMessage = useResetComponentMessage(dispatch);
+    const resetMessage = useResetComponentMessage(dispatch, "photo");
 
     const { user, loading } = useSelector((state) => state.user);
     const { user: userAuth } = useSelector((state) => state.auth);

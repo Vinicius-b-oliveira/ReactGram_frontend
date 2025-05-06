@@ -16,7 +16,7 @@ import { getPhotos, like } from "../../slices/photoSlice";
 const Home = () => {
     const dispatch = useDispatch();
 
-    const resetMessage = useResetComponentMessage(dispatch);
+    const resetMessage = useResetComponentMessage(dispatch, "photo");
 
     const { user } = useSelector((state) => state.auth);
 
