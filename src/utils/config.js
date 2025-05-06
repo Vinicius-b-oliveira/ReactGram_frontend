@@ -1,4 +1,4 @@
-export const api = import.meta.env.VITE_API_URL;
+export const api = "https://reactgram-api-tvsx.onrender.com/api";
 
 export const requestConfig = (method, data, token = null, image = null) => {
     let config;
