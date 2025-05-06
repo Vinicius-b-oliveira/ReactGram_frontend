@@ -12,6 +12,7 @@ import Register from "../pages/Auth/Register";
 import EditProfile from "../pages/EditProfile";
 import Profile from "../pages/Profile";
 import Photo from "../pages/Photo";
+import Search from "../pages/Search";
 
 export const AppRoutes = ({ auth }) => (
     <Routes>
@@ -36,6 +37,14 @@ export const AppRoutes = ({ auth }) => (
             element={
                 <ProtectedRoute auth={auth}>
                     <Profile />
+                </ProtectedRoute>
+            }
+        />
+        <Route
+            path="/search"
+            element={
+                <ProtectedRoute auth={auth}>
+                    <Search />
                 </ProtectedRoute>
             }
         />
