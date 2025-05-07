@@ -22,6 +22,8 @@ const Login = () => {
         errors: [],
     });
 
+    const [renderInitMessage, setRenderInitMessage] = useState("");
+
     const dispatch = useDispatch();
 
     const { loading, error } = useSelector((state) => state.auth);
@@ -60,7 +62,15 @@ const Login = () => {
             password: formData.password,
         };
 
+        setRenderInitMessage(
+            "O servidor pode demorar até 50s para responder devido a inicialização/tempo de inatividade (hospedagem gratuita da render)"
+        );
+
         dispatch(login(user));
+
+        setTimeout(() => {
+            setRenderInitMessage("");
+        }, 3000);
     };
 
     useEffect(() => {
@@ -94,6 +104,10 @@ const Login = () => {
                 {error && <Message message={error} type="error" />}
                 {formData.errors.length > 0 && (
                     <Message message={formData.errors[0]} type="error" />
+                )}
+
+                {renderInitMessage && (
+                    <Message message={renderInitMessage} type="warn" />
                 )}
             </form>
             <p>
