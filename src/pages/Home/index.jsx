@@ -3,6 +3,7 @@ import "./Home.scss";
 // Components
 import LikeContainer from "../../components/LikeContainer";
 import PhotoItem from "../../components/PhotoItem";
+import Loading from "../../components/Loading";
 import { Link } from "react-router-dom";
 
 // Hooks
@@ -12,7 +13,6 @@ import { useResetComponentMessage } from "../../hooks/useResetComponentMessage";
 
 // Redux
 import { getPhotos, like } from "../../slices/photoSlice";
-import Loading from "../../components/Loading";
 
 const Home = () => {
     const dispatch = useDispatch();

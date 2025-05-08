@@ -19,7 +19,6 @@ import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "../../hooks/useQuery";
 
 const Navbar = () => {
     const { auth } = useAuth();
@@ -53,15 +52,17 @@ const Navbar = () => {
             <Link className="brand" to="/">
                 ReactGram
             </Link>
-            <form className="search_form" onSubmit={handleSearch}>
-                <BsSearch />
-                <input
-                    type="text"
-                    placeholder="Pesquisar"
-                    onChange={(e) => setQuery(e.target.value)}
-                    value={query}
-                />
-            </form>
+            {user && (
+                <form className="search_form" onSubmit={handleSearch}>
+                    <BsSearch />
+                    <input
+                        type="text"
+                        placeholder="Pesquisar"
+                        onChange={(e) => setQuery(e.target.value)}
+                        value={query}
+                    />
+                </form>
+            )}
             <nav>
                 <ul className="nav_links">
                     {auth ? (

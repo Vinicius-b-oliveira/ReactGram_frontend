@@ -14,6 +14,12 @@ import { login, reset } from "../../slices/authSlice";
 
 // Validation
 import * as Yup from "yup";
+import InfoCard from "../../components/InfoCard";
+
+import { BsQuestionCircle } from "react-icons/bs";
+
+const infoMessage =
+    "Algumas vezes a requisição(login) pode falhar devido a uma instabilidade no CORS, em caso de erro reinicie a página e tente novamente";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -23,6 +29,7 @@ const Login = () => {
     });
 
     const [renderInitMessage, setRenderInitMessage] = useState("");
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -78,42 +85,64 @@ const Login = () => {
     }, [dispatch]);
 
     return (
-        <div id="login">
-            <h2>ReactGram</h2>
-
-            <p className="subtitle">Faça o login para ver o que há de novo.</p>
-
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="E-mail"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Senha"
-                    value={formData.password}
-                    onChange={handleInputChange}
+        <>
+            <div id="login">
+                <BsQuestionCircle
+                    className="hitn_icon"
+                    onClick={() => {
+                        setIsInfoModalOpen(true);
+                    }}
                 />
 
-                {!loading && <input type="submit" value="Entrar" />}
-                {loading && <input type="submit" value="Aguarde..." disabled />}
-                {error && <Message message={error} type="error" />}
-                {formData.errors.length > 0 && (
-                    <Message message={formData.errors[0]} type="error" />
-                )}
+                <h2>ReactGram</h2>
 
-                {renderInitMessage && (
-                    <Message message={renderInitMessage} type="warn" />
-                )}
-            </form>
-            <p>
-                Não tem uma conta? <Link to="/register">Clique aqui</Link>
-            </p>
-        </div>
+                <p className="subtitle">
+                    Faça o login para ver o que há de novo.
+                </p>
+
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="E-mail"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Senha"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                    />
+
+                    {!loading && <input type="submit" value="Entrar" />}
+                    {loading && (
+                        <input type="submit" value="Aguarde..." disabled />
+                    )}
+                    {error && <Message message={error} type="error" />}
+                    {formData.errors.length > 0 && (
+                        <Message message={formData.errors[0]} type="error" />
+                    )}
+
+                    {renderInitMessage && (
+                        <Message message={renderInitMessage} type="warn" />
+                    )}
+                </form>
+                <p>
+                    Não tem uma conta? <Link to="/register">Clique aqui</Link>
+                </p>
+            </div>
+
+            {isInfoModalOpen && (
+                <InfoCard
+                    message={infoMessage}
+                    closeInfoCard={() => {
+                        setIsInfoModalOpen(false);
+                    }}
+                />
+            )}
+        </>
     );
 };
 

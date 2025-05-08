@@ -5,6 +5,7 @@ import "./Profile.scss";
 import Message from "../../components/Message";
 import { Link } from "react-router-dom";
 import { BsFillEyeFill, BsPencilFill, BsXLg } from "react-icons/bs";
+import Loading from "../../components/Loading";
 
 // Hooks
 import { useState, useEffect, useRef } from "react";
@@ -20,7 +21,6 @@ import {
     deletePhoto,
     updatePhoto,
 } from "../../slices/photoSlice";
-import Loading from "../../components/Loading";
 
 const Profile = () => {
     const { id } = useParams();

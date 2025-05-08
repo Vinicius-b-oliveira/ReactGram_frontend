@@ -4,6 +4,7 @@ import "./Auth.scss";
 // Components
 import { Link } from "react-router-dom";
 import Message from "../../components/Message";
+import InfoCard from "../../components/InfoCard";
 
 // Hooks
 import { useState, useEffect } from "react";
@@ -15,6 +16,11 @@ import { register, reset } from "../../slices/authSlice";
 // Validation
 import * as Yup from "yup";
 
+import { BsQuestionCircle } from "react-icons/bs";
+
+const infoMessage =
+    "Algumas vezes a requisição(registro) pode falhar devido a uma instabilidade no CORS, em caso de erro reinicie a página e tente novamente";
+
 const Register = () => {
     const [formData, setFormData] = useState({
         name: "",
@@ -23,6 +29,9 @@ const Register = () => {
         confirmPassword: "",
         errors: [],
     });
+
+    const [renderInitMessage, setRenderInitMessage] = useState("");
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -72,7 +81,15 @@ const Register = () => {
             confirmPassword: formData.confirmPassword,
         };
 
+        setRenderInitMessage(
+            "O servidor pode demorar até 50s para responder devido a inicialização/tempo de inatividade (hospedagem gratuita da render)"
+        );
+
         dispatch(register(user));
+
+        setTimeout(() => {
+            setRenderInitMessage("");
+        }, 3000);
     };
 
     useEffect(() => {
@@ -80,53 +97,76 @@ const Register = () => {
     }, [dispatch]);
 
     return (
-        <div id="register">
-            <h2>ReactGram</h2>
-            <p className="subtitle">
-                Cadastre-se para ver as fotos dos seus amigos.
-            </p>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Nome"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Senha"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                />
-                <input
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="Confirme a senha"
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
+        <>
+            <div id="register">
+                <BsQuestionCircle
+                    className="hitn_icon"
+                    onClick={() => {
+                        setIsInfoModalOpen(true);
+                    }}
                 />
 
-                {!loading && <input type="submit" value="Cadastrar" />}
-                {loading && <input type="submit" value="Aguarde..." disabled />}
-                {error && <Message message={error} type="error" />}
-                {formData.errors.length > 0 && (
-                    <Message message={formData.errors[0]} type="error" />
-                )}
-            </form>
+                <h2>ReactGram</h2>
+                <p className="subtitle">
+                    Cadastre-se para ver as fotos dos seus amigos.
+                </p>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Nome"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Senha"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        type="password"
+                        name="confirmPassword"
+                        placeholder="Confirme a senha"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                    />
 
-            <p>
-                Já tem conta? <Link to="/login">Clique aqui</Link>
-            </p>
-        </div>
+                    {!loading && <input type="submit" value="Cadastrar" />}
+                    {loading && (
+                        <input type="submit" value="Aguarde..." disabled />
+                    )}
+                    {error && <Message message={error} type="error" />}
+                    {formData.errors.length > 0 && (
+                        <Message message={formData.errors[0]} type="error" />
+                    )}
+                    {renderInitMessage && (
+                        <Message message={renderInitMessage} type="warn" />
+                    )}
+                </form>
+
+                <p>
+                    Já tem conta? <Link to="/login">Clique aqui</Link>
+                </p>
+            </div>
+
+            {isInfoModalOpen && (
+                <InfoCard
+                    message={infoMessage}
+                    closeInfoCard={() => {
+                        setIsInfoModalOpen(false);
+                    }}
+                />
+            )}
+        </>
     );
 };
 

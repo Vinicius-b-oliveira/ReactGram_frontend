@@ -2,11 +2,19 @@
 
 #login,
 #register {
+    position: relative;
     border: 1px solid #363636;
     background-color: $surface-color;
     padding: 1.5em 2em;
     max-width: 33%;
     margin: 2em auto;
+
+    .hitn_icon {
+        position: absolute;
+        padding: 5px;
+        top: 15px;
+        right: 15px;
+    }
 
     h2 {
         text-align: center;
@@ -33,5 +41,10 @@
         padding-bottom: 1.5em;
         margin-bottom: 1.5em;
         border-bottom: 1px solid #363636;
+    }
+
+    @media (max-width: 500px) {
+        margin: 2em 0;
+        max-width: 100%;
     }
 }
